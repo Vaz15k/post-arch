@@ -134,7 +134,10 @@ function blue () {
 function util () {
    clear
    echo "Instalado apps comuns"
-   pacman -S corectrl android-tools scrcpy telegram-desktop fd tldr man bashtop --noconfirm
+   pacman -S corectrl android-tools scrcpy telegram-desktop fd tldr man bashtop dosfstools mtools --noconfirm
+   clear
+   echo "Instalando libs para python"
+   sudo pacman -S git curl base-devel make libmysqlclient openssl gcc python3
    clear
    echo "Aplicativos prontos"
    sleep 5
@@ -157,7 +160,7 @@ function mine () {
    case $laun in 
    1)
       echo "Instalando o Launcher Original"
-      pacman -S jdk-openjdk jre-openjdk minecraft-launcher --noconfirm
+      pacman -S jdk-openjdk jre-openjdk minecraft-launcher gnome-keyring --noconfirm
       clear
       echo "Mojang é meu ovo"
       sleep 5
