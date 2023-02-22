@@ -8,51 +8,51 @@
 function menu() {
    echo "Escolha o que deseja instalar..."
    echo ""
-   echo "1. Paru"
-   echo "2. ChaoticAUR"
-   echo "3. Vivaldi"
-   echo "4. Serviços de Impressao"
-   echo "5. Serviços de Bluetooh"
-   echo "6. Apps Utils"
-   echo "7. Minecraft"
+   echo "1. Chaotic AUR"
+   echo "2. Vivaldi"
+   echo "3. Serviços de Impressao"
+   echo "4. Serviços de Bluetooh"
+   echo "5. Apps Utils"
+   echo "6. Minecraft"
+   echo "7. Apps AUR - Instale a Opção 1 primeiro"
    echo ""
    echo "s. Sair"
    read opc
 
 case $opc in
 		1)
-			echo "Paru selecionado"
+			echo "Chaotic AUR selecionado"
 			paru
 			menu
 			;;
 		2)
-			echo "Chaotic AUR selecionado"
+			echo "Vivaldi selecionado"
 			chaotic
 			menu
 			;;
 		3)
-			echo "Vivaldi selecionado"
-			vivaldi
-			menu
-			;;
-		4)
 			echo "Serviços de Impressao selecionado"
 			press
 			menu
 			;;
-      5)
+      4)
          echo "Serviços Bluetooh selecionado"
          blue
          menu
          ;;
-      6)
+      5)
          echo "Ultilidades sendo instaldas"
          util
          menu
          ;;
-      7)
+      6)
          echo "Instalando o Mojangão"
          mine
+         menu
+         ;;
+      7)
+         echo "Instalando Apps AUR"
+         apps_aur
          menu
          ;;
 		s)
@@ -68,29 +68,14 @@ case $opc in
 
 # Comandos de instalação segundo o menu
 
-function paru() {
-   clear
-   echo "Instalando o Paru AUR..."
-   sudo pacman -S --needed base-devel git --noconfirm
-   git clone https://aur.archlinux.org/paru.git
-   cd paru
-   makepkg -si --noconfirm
-   clear
-   cd ..
-   rm -fr paru/
-   echo "Paru AUR Instalado"
-   sleep 5
-   clear
-}
-
 function chaotic () {
    clear
    echo "Instalando Chaotic AUR..."
+   echo "Se poder faça a instalação do paru AUR, "
    pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
    pacman-key --lsign-key FBA220DFC880C036
    pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
-   cat "[chaotic-aur]
-   Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+   cat "[chaotic-aur] Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
    clear
    echo "Chaotic AUR instalado"
    sleep 5
@@ -123,8 +108,8 @@ function blue () {
    clear
    echo "Preparando o Bluetooth"
    pacman -S bluez bluez-utils --noconfirm
-   systemctl enable bluetooth.services
-   systemctl start bluetooth.services
+   systemctl enable bluetooth.service
+   systemctl start bluetooth.service
    clear
    echo "Pronto para se conectar"
    sleep 5
@@ -134,10 +119,13 @@ function blue () {
 function util () {
    clear
    echo "Instalado apps comuns"
-   pacman -S corectrl android-tools scrcpy telegram-desktop fd tldr man bashtop dosfstools mtools --noconfirm
+   pacman -S corectrl android-tools scrcpy telegram-desktop fd tldr man micro bashtop dosfstools mtools --noconfirm
+   clear
+   echo "Instalando codecs de audio e video"
+   pacman -S ffmpeg gst-plugins-ugly gst-plugins-good gst-plugins-base gst-plugins-bad gst-libav gstreamer ntfs-3g --noconfirm
    clear
    echo "Instalando libs para python"
-   sudo pacman -S git curl base-devel make libmysqlclient openssl gcc python3
+   sudo pacman -S git curl base-devel make libmysqlclient openssl gcc python3 --noconfirm
    clear
    echo "Aplicativos prontos"
    sleep 5
@@ -187,6 +175,12 @@ function mine () {
 		menu
 		;;
    esac
+}
+
+function apps_aur () {
+   clear
+   echo "Esses apps nescessitam do Chaotic AUR instalado"
+   pacman -S visual-studio-code-bin jamesdsp heimdall-grimler-git  --noconfirm
 }
 
 sair() {
